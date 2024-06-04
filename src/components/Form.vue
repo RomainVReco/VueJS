@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
+import {Task} from '../services/tasks'
 
 const name = ref<string>("")
 const description = ref<string>("")
@@ -25,7 +26,7 @@ const temporalityTypes = ref([
 const emits = defineEmits(['createtask'])
 
 const createTask = () => {
-    const task = {
+    const task:Task = {
         id: Date.now(),
         name: name.value,
         description: description.value,

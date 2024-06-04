@@ -2,6 +2,11 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Form from './components/Form.vue'
 import HelloWorld from './components/HelloWorld.vue';
+
+const addTask = (data) => {
+  console.log('Home view', data)
+}
+
 </script>
 
 <template>
@@ -10,7 +15,7 @@ import HelloWorld from './components/HelloWorld.vue';
 
     <div class="wrapper">
       <HelloWorld msg="Stasi, pour mieux connaître votre vie" />
-      <Form />
+      <Form @createtask="addTask" />
 
       <nav>
         <RouterLink to="/">Jambon</RouterLink>

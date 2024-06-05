@@ -19,7 +19,7 @@ function read():Task[] {
 function convertCase (temporality:string):string {
     let result:string;
     switch (temporality) {
-        case 'short term':
+        case 'short-term':
             result = "Court terme"
             break;
         case 'medium-term':

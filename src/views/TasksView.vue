@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import tasksService, { Task } from '../services/tasks'
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const letters = ref<string>("")
 const tasks = ref<Task[]>([])
 tasks.value = tasksService.read()
 let tasksFiltered = ref<Task[]>([])
+const selectedTemporality = ref<string>("")
 filter()
 function filter() {
     console.log(letters.value)
@@ -15,13 +16,37 @@ function filter() {
         tasksFiltered.value = tasks.value.filter(task =>
             task.name.toLocaleLowerCase().includes(letters.value.toLocaleLowerCase()))
     }
+    console.log(selectedTemporality)
+    if (selectedTemporality.value !== "") {
+        tasksFiltered.value = tasksFiltered.value.filter(task =>
+            task.temporality === selectedTemporality.value
+        )
+    }
 }
 
+watch(selectedTemporality, (newValue, oldValue) => {
+    console.log("newValue : ", newValue, " | ", "oldValue : ", oldValue)
+    filter()
+})
 </script>
 
 <template>
     <div v-if="tasks.length > 0">
         <input type="text" placeholder="filtrer" v-model="letters" @keyup="filter">
+        <div class="radio-filters">
+            <label for="all">
+                <input type="radio" id="all" value="" v-model="selectedTemporality" /> Toutes
+            </label>
+            <label for="short-term">
+                <input type="radio" id="short-term" value="short-term" v-model="selectedTemporality" /> Court terme
+            </label>
+            <label for="medium-term">
+                <input type="radio" id="medium-term" value="medium-term" v-model="selectedTemporality" /> Moyen terme
+            </label>
+            <label for="long-term">
+                <input type="radio" id="long-term" value="long-term" v-model="selectedTemporality" /> Long terme
+            </label>
+        </div>
         <div class="task" v-for="task in tasksFiltered" :key="task.id">
             <h3>{{ task.name }}</h3>
             <p>{{ task.description }}</p>
@@ -41,5 +66,10 @@ function filter() {
     border: 3px solid #42b983;
     border-radius: 0.5rem;
     padding-left: 2rem;
+}
+
+.radio-filters {
+    display: flex;
+    justify-content: space-evenly;
 }
 </style>

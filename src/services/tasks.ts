@@ -12,7 +12,7 @@ function create(task:Task) {
     console.log('tasks', tasks)
 }
 
-function read() {
+function read():Task[] {
     return tasks;
 }
 

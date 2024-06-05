@@ -22,7 +22,7 @@ const temporalityTypes = ref([
         value: "long-term"
     }
 ])
-let txtName = ref<string>("")
+let txtName = ref<HTMLInputElement>(null)
 
 const emits = defineEmits(['createtask'])
 
@@ -42,11 +42,12 @@ const resetForm = () => {
     name.value = ""
     description.value = ""
     temporality.value = ""
+    txtName.value.focus()
 }
 
 onMounted(() => {
     console.log('onMounted | txtName : ', txtName.value)
-
+    txtName.value.focus()
 })
 
 </script>

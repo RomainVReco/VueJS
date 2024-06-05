@@ -1,20 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import Form from './components/Form.vue'
+
 import HelloWorld from './components/HelloWorld.vue';
-import tasksService, { Task } from './services/tasks'
 
-
-const addTask = (data: Task) => {
-  let task: Task = {
-    id: data.id,
-    name: data.name,
-    description: data.description,
-    temporality: data.temporality
-  }
-  tasksService.create(task)
-  console.log('Home view', data)
-}
 
 
 </script>
@@ -25,17 +13,17 @@ const addTask = (data: Task) => {
 
     <div class="wrapper">
       <HelloWorld msg="Stasi, pour mieux connaître votre vie" />
-      <Form @createtask="addTask" />
+
 
       <nav>
         <RouterLink to="/">Jambon</RouterLink>
-        <RouterLink to="/about">Beurre</RouterLink>
         <RouterLink to="/tasks">Tâches</RouterLink>
+        <RouterLink to="/about">Beurre</RouterLink>
       </nav>
     </div>
   </header>
-
   <RouterView />
+
 </template>
 
 <style scoped>

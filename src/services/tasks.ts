@@ -16,6 +16,25 @@ function read() {
     return tasks;
 }
 
+function convertCase (temporality:string):string {
+    let result:string;
+    switch (temporality) {
+        case 'short term':
+            result = "Court terme"
+            break;
+        case 'medium-term':
+            result = "Moyen terme"
+            break;
+        case 'long-term':
+            result = "Long terme"
+            break;
+        default:
+            result = "Erreur"
+            break;
+    }
+    return result
+}
+
 export default {
-    create, read
+    create, read, convertCase
 }

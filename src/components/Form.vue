@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue'
-import {Task} from '../services/tasks'
+import { ref, defineEmits, onMounted } from 'vue'
+import { Task } from '../services/tasks'
 
 const name = ref<string>("")
 const description = ref<string>("")
@@ -22,11 +22,12 @@ const temporalityTypes = ref([
         value: "long-term"
     }
 ])
+let txtName = ref<string>("")
 
 const emits = defineEmits(['createtask'])
 
 const createTask = () => {
-    const task:Task = {
+    const task: Task = {
         id: Date.now(),
         name: name.value,
         description: description.value,
@@ -43,13 +44,18 @@ const resetForm = () => {
     temporality.value = ""
 }
 
+onMounted(() => {
+    console.log('onMounted | txtName : ', txtName.value)
+
+})
+
 </script>
 
 <template>
     <div>
         <h3>Créer une tâche</h3>
         <form @submit.prevent="createTask">
-            <input type="text" placeholder="Nom de la tâche" v-model="name"><br>
+            <input type="text" placeholder="Nom de la tâche" v-model="name" ref="txtName"><br>
             <textarea cols="30" rows="10" v-model="description" placeholder="Description de la tâche"></textarea><br>
             <select v-model="temporality">
                 <option value="">---</option>

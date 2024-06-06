@@ -6,14 +6,34 @@ export interface Task {
 }
 
 let tasks:Task[] = []
+const STORAGE_KEY:string = "tasks-vue-compo-api"
 
 function create(task:Task) {
+    // if (tasks === null ) {
+    //     tasks = []
+    // }
     tasks = [task, ...tasks]
     console.log('tasks', tasks)
+    saveTasks()
 }
 
 function read():Task[] {
+    tasks = retrieveTasks();
     return tasks;
+}
+
+function deleteTask(id:number):void {
+    tasks = tasks.filter(task => task.id !== id)
+    saveTasks()
+}
+
+function saveTasks() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
+}
+
+function retrieveTasks():Task[] {
+    const fromLocalStorage:string = localStorage.getItem(STORAGE_KEY) as string
+    return JSON.parse(fromLocalStorage)
 }
 
 function convertCase (temporality:string):string {
@@ -36,5 +56,5 @@ function convertCase (temporality:string):string {
 }
 
 export default {
-    create, read, convertCase
+    create, read, convertCase, deleteTask
 }

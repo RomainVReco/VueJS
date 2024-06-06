@@ -28,6 +28,12 @@ watch(selectedTemporality, (newValue, oldValue) => {
     console.log("newValue : ", newValue, " | ", "oldValue : ", oldValue)
     filter()
 })
+
+function deleteTask(id: number) {
+    tasksService.deleteTask(id)
+    tasks.value = tasksService.read()
+    filter()
+}
 </script>
 
 <template>
@@ -51,6 +57,9 @@ watch(selectedTemporality, (newValue, oldValue) => {
             <h3>{{ task.name }}</h3>
             <p>{{ task.description }}</p>
             <p>Echéance : {{ tasksService.convertCase(task.temporality) }}</p>
+            <div>
+                <button class="small" @click="() => deleteTask(task.id)">Suppr</button>
+            </div>
         </div>
     </div>
     <div v-else>
@@ -71,5 +80,9 @@ watch(selectedTemporality, (newValue, oldValue) => {
 .radio-filters {
     display: flex;
     justify-content: space-evenly;
+}
+
+.small {
+    width: 45px;
 }
 </style>

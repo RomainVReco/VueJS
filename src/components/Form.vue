@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits, onMounted } from 'vue'
+import { ref, defineEmits, onMounted, computed } from 'vue'
 import { Task } from '../services/tasks'
 
 const name = ref<string>("")
@@ -50,6 +50,11 @@ onMounted(() => {
     txtName.value.focus()
 })
 
+const isFormValid = computed(() => {
+    if (name.value !== "" && description.value !== "" && temporality.value !== "") return true;
+    else false
+})
+
 </script>
 
 <template>
@@ -63,7 +68,7 @@ onMounted(() => {
                 <option v-for="type in temporalityTypes" v-bind:key="type.id" :value="type.value">{{ type.name }}
                 </option>
             </select><br>
-            <button type="submit">Créer</button>
+            <button type="submit" :disabled="!isFormValid">Créer</button>
 
         </form>
     </div>

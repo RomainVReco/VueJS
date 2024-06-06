@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Modal from '../components/Modal.vue';
 import tasksService, { Task } from '../services/tasks'
 import { ref, watch } from 'vue';
 
@@ -29,14 +30,33 @@ watch(selectedTemporality, (newValue, oldValue) => {
     filter()
 })
 
+function toggle(task: Task) {
+    taskToEdit.value = task
+    isInEditMode = true
+}
+
+function updatedTask(task: Task) {
+    console.log("updatedTask", task)
+}
+
 function deleteTask(id: number) {
     tasksService.deleteTask(id)
     tasks.value = tasksService.read()
     filter()
 }
+
+function cancelEdit() {
+    isInEditMode = true
+    taskToEdit = null
+}
+
+let taskToEdit = ref<Task>(null)
+let isInEditMode: boolean = false
+
 </script>
 
 <template>
+    <Modal v-if="isInEditMode" :task="taskToEdit" @updatedtask="updatedTask($event)" @cancel="cancelEdit" />
     <div v-if="tasks.length > 0">
         <input type="text" placeholder="filtrer" v-model="letters" @keyup="filter">
         <div class="radio-filters">
@@ -59,6 +79,7 @@ function deleteTask(id: number) {
             <p>Echéance : {{ tasksService.convertCase(task.temporality) }}</p>
             <div>
                 <button class="small" @click="() => deleteTask(task.id)">Suppr</button>
+                <button class="small" @click="() => toggle(task)">Edit</button>
             </div>
         </div>
     </div>
@@ -66,8 +87,6 @@ function deleteTask(id: number) {
         <h3>Aucune tâche n'a été trouvée</h3>
     </div>
 </template>
-
-
 
 <style scoped>
 .task {

@@ -1,20 +1,18 @@
 <template>
-    <div>
-        <div class="modal-background">
-            <div class="modal">
-                <h3>Modifier une tâche</h3>
-                <form @submit.prevent="updateTask">
-                    <input type="text" v-model="taskEdit.name" placeholder="Nom de la tâche" /><br>
-                    <textarea cols="30" rows="10" v-model="taskEdit.description"></textarea>
-                    <select v-model="taskEdit.temporality">
-                        <option v-for="tempo in temporalityTypes" :value="tempo.value" :key="tempo.id"
-                            :selected="tempo.value === taskEdit.temporality">{{ tempo.name }}
-                        </option>
-                    </select><br>
-                    <button :disabled="!isFormValid">Sauvegarder</button>
-                    <button @click="cancel">Annuler</button>
-                </form>
-            </div>
+    <div class="modal-background">
+        <div class="modal">
+            <h3>Modifier une tâche</h3>
+            <form @submit.prevent="updateTask">
+                <input type="text" v-model="taskToEdit.name" placeholder="Nom de la tâche" /><br>
+                <textarea cols="30" rows="10" v-model="taskToEdit.description"></textarea>
+                <select v-model="taskToEdit.temporality">
+                    <option v-for="tempo in temporalityTypes" :value="tempo.value" :key="tempo.id"
+                        :selected="tempo.value === taskToEdit.temporality">{{ tempo.name }}
+                    </option>
+                </select><br>
+                <button :disabled="!isFormValid" type="submit">Sauvegarder</button>
+                <button @click="cancel">Annuler</button>
+            </form>
         </div>
     </div>
 </template>
@@ -23,10 +21,10 @@
 import { defineProps, defineEmits, ref, computed } from 'vue';
 import { Task } from '../services/tasks'
 
-const props = defineProps<Task>()
-const emits = defineEmits(['updatedTask', 'cancel'])
 
-let taskEdit = ref<Task>({ ...props })
+const emits = defineEmits(['updatedTask', 'cancel'])
+const props = defineProps<{ task: Task }>()
+let taskToEdit = ref<Task>({ ...props.task })
 
 const temporalityTypes = ref([
     {
@@ -50,10 +48,10 @@ let temporality = ref<string>("")
 
 function updateTask() {
     const taskUpdated = {
-        id: taskEdit.value.id,
-        name: taskEdit.value.name,
-        description: taskEdit.value.description,
-        temporality: taskEdit.value.temporality
+        id: taskToEdit.value.id,
+        name: taskToEdit.value.name,
+        description: taskToEdit.value.description,
+        temporality: taskToEdit.value.temporality
     }
     console.log('taskUpdated', taskUpdated)
     emits('updatedTask', taskUpdated)
@@ -64,7 +62,7 @@ function cancel() {
 }
 
 const isFormValid = computed(() => {
-    if (taskEdit.value.name !== "" && taskEdit.value.description !== "" && taskEdit.value.temporality !== "") return true;
+    if (taskToEdit.value.name !== "" && taskToEdit.value.description !== "" && taskToEdit.value.temporality !== "") return true;
     else false
 })
 

@@ -32,11 +32,13 @@ watch(selectedTemporality, (newValue, oldValue) => {
 
 function toggle(task: Task) {
     taskToEdit.value = task
-    isInEditMode = true
+    console.log('taskToEdit.value : ', taskToEdit.value)
+    isInEditMode.value = true
 }
 
 function updatedTask(task: Task) {
     console.log("updatedTask", task)
+    isInEditMode.value = false
 }
 
 function deleteTask(id: number) {
@@ -46,12 +48,12 @@ function deleteTask(id: number) {
 }
 
 function cancelEdit() {
-    isInEditMode = true
-    taskToEdit = null
+    isInEditMode.value = false
+    taskToEdit.value = null
 }
 
 let taskToEdit = ref<Task>(null)
-let isInEditMode: boolean = false
+let isInEditMode = ref<boolean>(false)
 
 </script>
 
